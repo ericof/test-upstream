@@ -2,20 +2,25 @@
 """Simple echo chamber service."""
 import bottle
 import json
-import re
 
 
-PATTERN = re.compile(r"'(?P<route>[\?A-Za-z0-9_\./\\-]*)'")
-
-
-@bottle.error(404)
-def error404(error):
+@bottle.route('<name:path>', method='ANY')
+def catch_all(name):
     """Catch all requests, return a JSON response with the same url."""
-    match = re.search(PATTERN, error.body)
-    if match:
-        body = match.groupdict()
-    else:
-        body = {'route': error.body}
+    name = name if name.startswith('/') else '/{}'.format(name)
+    request = bottle.request
+    method = request.method
+    headers = request.headers
+    headers_data = dict([(key, headers[key]) for key in headers])
+    query_data = dict([(key, request.query[key]) for key in request.query])
+    form_data = dict([(key, request.forms[key]) for key in request.forms])
+    body = {
+        'route': name,
+        'verb': method,
+        'headers': headers_data,
+        'form_data': form_data,
+        'query_data': query_data,
+    }
 
     return bottle.HTTPResponse(
         status=200,
