@@ -1,0 +1,17 @@
+language: python
+python:
+  - 2.7
+
+services:
+  - docker
+
+install:
+  - docker build -t test-upstream .
+  - docker run -d -p 127.0.0.1:8080:8080 --name upstream test-upstream
+
+before_script:
+  - pip install -r tests/requirements.txt
+
+script:
+  - docker ps | grep -q upstream
+  - python tests/tests.py
