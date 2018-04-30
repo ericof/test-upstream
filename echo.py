@@ -2,6 +2,10 @@
 """Simple echo chamber service."""
 import bottle
 import json
+from prettyconf import config
+
+
+PORT = config('PORT', default=8080)
 
 
 @bottle.route('<name:path>', method='ANY')
@@ -28,4 +32,4 @@ def catch_all(name):
         body=json.dumps(body)
     )
 
-bottle.run(host='0.0.0.0', port=8080)
+bottle.run(host='0.0.0.0', port=PORT)
