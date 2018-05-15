@@ -71,3 +71,36 @@ class UpstreamTestCase(unittest.TestCase):
             data=payload
         )
         self.assertEqual(endpoint, resp.json()['route'])
+
+    def test_sleep(self):
+        """Test sleep route with GET."""
+        endpoint = '/sleep/1'
+        resp = requests.get(
+            self.get_url(endpoint)
+        )
+        self.assertEqual('application/json', resp.headers['Content-Type'])
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(endpoint, resp.json()['route'])
+        self.assertEqual('GET', resp.json()['verb'])
+
+    def test_error_route(self):
+        """Test sleep route with GET."""
+        endpoint = '/error_route/404'
+        resp = requests.get(self.get_url(endpoint))
+        self.assertEqual(404, resp.status_code)
+
+        endpoint = '/error_route/500'
+        resp = requests.get(self.get_url(endpoint))
+        self.assertEqual(404, resp.status_code)
+
+        endpoint = '/error_route/502'
+        resp = requests.get(self.get_url(endpoint))
+        self.assertEqual(404, resp.status_code)
+
+        endpoint = '/error_route/503'
+        resp = requests.get(self.get_url(endpoint))
+        self.assertEqual(404, resp.status_code)
+
+        endpoint = '/error_route/504'
+        resp = requests.get(self.get_url(endpoint))
+        self.assertEqual(404, resp.status_code)

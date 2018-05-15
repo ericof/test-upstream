@@ -1,3 +1,3 @@
-# RideLink Test Upstream
+# Test Upstream
 
-https://hub.docker.com/r/ridelink/test-upstream/
+https://hub.docker.com/r/ericof/test-upstream/
