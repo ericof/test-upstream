@@ -14,4 +14,4 @@ before_script:
 
 script:
   - docker ps | grep -q upstream
-  - python tests/tests.py
+  - pytest tests
